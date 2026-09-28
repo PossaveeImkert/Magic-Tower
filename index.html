@@ -1,0 +1,841 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>ARCANA: THE TOWER - 2D Visual Novel & Card Battle</title>
+    <meta name="description" content="ARCANA: THE TOWER - 2D Visual Novel + Turn-Based Card Battle prototype set in a late 1990s Japanese Magic Academy." />
+    <meta property="og:title" content="ARCANA: THE TOWER - 2D Visual Novel & Card Battle" />
+    <meta property="og:description" content="2D Visual Novel + Turn-Based Card Battle prototype set in a late 1990s Japanese Magic Academy as a mysterious tower emerges." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <!-- Nostalgic scanline and vignette overlay -->
+    <div class="scanline-overlay"></div>
+    <div class="vignette-overlay"></div>
+
+    <div id="app">
+      <!-- ========================================================
+           SCREEN 1: TITLE SCREEN (CINEMATIC VISUAL NOVEL MAIN MENU)
+           ======================================================== -->
+      <section id="screen-title" class="game-screen title-screen-cinematic">
+        <!-- 1. Full-screen atmospheric background image with smooth ambient drift -->
+        <div id="title-bg-container" class="title-bg-layer">
+          <div id="title-bg-image" class="title-bg-photo"></div>
+          <div class="title-bg-scrim"></div>
+          <div class="title-mist-layer"></div>
+          <!-- Subtle arcane dust / floating magical particles (lightweight pure CSS) -->
+          <div class="title-particles" aria-hidden="true">
+            <span class="arcane-mote m1"></span>
+            <span class="arcane-mote m2"></span>
+            <span class="arcane-mote m3"></span>
+            <span class="arcane-mote m4"></span>
+            <span class="arcane-mote m5"></span>
+            <span class="arcane-mote m6"></span>
+            <span class="arcane-mote m7"></span>
+            <span class="arcane-mote m8"></span>
+          </div>
+        </div>
+
+        <!-- 2. Side Character Art Showcase (Subtle cinematic visual novel character presence) -->
+        <div class="title-character-stage" aria-hidden="true">
+          <div id="title-character-box" class="title-character-box">
+            <img
+              id="title-char-img"
+              class="title-character-portrait"
+              src="/src/assets/images/rina_portrait_1790578115942.jpg"
+              alt="Character"
+              referrerpolicy="no-referrer"
+            />
+            <div class="title-character-scrim"></div>
+            <div class="title-character-caption">
+              <span class="char-role-tag">INTERNAL MAGE • CLASSMATE</span>
+              <span class="char-name-tag">RINA KANAZAWA</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Foreground Cinematic Content Grid: Left Title / Right Menu -->
+        <div class="title-layout-grid">
+          <!-- Left Zone: Brand Title, Arcane Seal Motif, World Kicker -->
+          <div class="title-brand-zone">
+            <!-- Complete Edition Badge if finished -->
+            <div id="title-completed-badge" class="title-badge title-completed-badge hidden">★ COMPLETE EDITION ★</div>
+            
+            <div class="title-arcane-seal">
+              <svg viewBox="0 0 160 160" class="seal-svg" aria-hidden="true">
+                <circle cx="80" cy="80" r="74" fill="none" stroke="rgba(245, 158, 11, 0.4)" stroke-width="1.5" stroke-dasharray="6,4"/>
+                <circle cx="80" cy="80" r="66" fill="none" stroke="rgba(56, 189, 248, 0.35)" stroke-width="1"/>
+                <polygon points="80,18 135,112 25,112" fill="none" stroke="rgba(216, 180, 254, 0.35)" stroke-width="1"/>
+                <polygon points="80,142 25,48 135,48" fill="none" stroke="rgba(216, 180, 254, 0.35)" stroke-width="1"/>
+                <circle cx="80" cy="80" r="28" fill="rgba(15, 23, 42, 0.6)" stroke="rgba(245, 158, 11, 0.6)" stroke-width="1.5"/>
+                <circle cx="80" cy="80" r="8" fill="#fbbf24"/>
+              </svg>
+            </div>
+
+            <div class="title-kicker-bar">
+              <span class="kicker-dot">◆</span>
+              <span class="kicker-text">TOKYO 1999 • NATIONAL MAGIC ACADEMY</span>
+              <span class="kicker-dot">◆</span>
+            </div>
+
+            <h1 class="title-main-logo">MAGIC TOWER</h1>
+            <div class="title-sub-logo">THE TOWER IN THE CITY</div>
+
+            <div class="title-divider-line">
+              <span class="line-diamond"></span>
+            </div>
+
+            <p class="title-lore-text">
+              สถาบันการศึกษาเวทมนตร์แห่งชาติ • มหานครโตเกียว ปลายศตวรรษที่ 20<br/>
+              ยุคสมัยที่เวทมนตร์โบราณ อุปกรณ์อิเล็กทรอนิกส์ และหอคอยปริศนามาบรรจบกัน
+            </p>
+
+            <div class="title-specs-bar">
+              <span>6 CHAPTERS COMPLETE</span>
+              <span>·</span>
+              <span>TACTICAL CARD BATTLE</span>
+              <span>·</span>
+              <span>BRANCHING VISUAL NOVEL</span>
+            </div>
+          </div>
+
+          <!-- Right Zone: Vertical Cinematic VN Menu -->
+          <div class="title-menu-zone">
+            <nav class="title-menu-list" aria-label="Main Menu">
+              <!-- START GAME -->
+              <button id="btn-title-start" class="btn-vn-menu btn-vn-primary" tabIndex="0">
+                <span class="btn-vn-rail"></span>
+                <span class="btn-vn-marker">▶</span>
+                <span class="btn-vn-label-group">
+                  <span class="btn-vn-main">START GAME</span>
+                  <span class="btn-vn-sub">เริ่มต้นการเดินทางใหม่</span>
+                </span>
+              </button>
+
+              <!-- CONTINUE -->
+              <button id="btn-title-continue" class="btn-vn-menu disabled" disabled tabIndex="0">
+                <span class="btn-vn-rail"></span>
+                <span class="btn-vn-marker">⏩</span>
+                <span class="btn-vn-label-group">
+                  <span class="btn-vn-main" id="label-title-continue">CONTINUE</span>
+                  <span id="title-continue-info" class="btn-vn-sub">เล่นต่อจากจุดบันทึกล่าสุด</span>
+                </span>
+              </button>
+
+              <!-- LOAD GAME -->
+              <button id="btn-title-load" class="btn-vn-menu" tabIndex="0">
+                <span class="btn-vn-rail"></span>
+                <span class="btn-vn-marker">📂</span>
+                <span class="btn-vn-label-group">
+                  <span class="btn-vn-main">LOAD GAME</span>
+                  <span class="btn-vn-sub">โหลดข้อมูลบันทึก (4 ช่องบันทึก)</span>
+                </span>
+              </button>
+
+              <!-- CARD COLLECTION -->
+              <button id="btn-title-collection" class="btn-vn-menu" tabIndex="0">
+                <span class="btn-vn-rail"></span>
+                <span class="btn-vn-marker">📖</span>
+                <span class="btn-vn-label-group">
+                  <span class="btn-vn-main">CARD COLLECTION</span>
+                  <span class="btn-vn-sub">คลังการ์ดเวทมนตร์ (16 ใบ)</span>
+                </span>
+              </button>
+
+              <!-- CHARACTERS -->
+              <button id="btn-title-relationships" class="btn-vn-menu" tabIndex="0">
+                <span class="btn-vn-rail"></span>
+                <span class="btn-vn-marker">👥</span>
+                <span class="btn-vn-label-group">
+                  <span class="btn-vn-main">CHARACTERS</span>
+                  <span class="btn-vn-sub">ตัวละคร & สายสัมพันธ์</span>
+                </span>
+              </button>
+
+              <!-- DECK BUILDER -->
+              <button id="btn-title-deck" class="btn-vn-menu" tabIndex="0">
+                <span class="btn-vn-rail"></span>
+                <span class="btn-vn-marker">🎴</span>
+                <span class="btn-vn-label-group">
+                  <span class="btn-vn-main">DECK BUILDER</span>
+                  <span class="btn-vn-sub">จัดสำรับการ์ดต่อสู้</span>
+                </span>
+              </button>
+
+              <!-- SETTINGS -->
+              <button id="btn-title-settings" class="btn-vn-menu" tabIndex="0">
+                <span class="btn-vn-rail"></span>
+                <span class="btn-vn-marker">⚙️</span>
+                <span class="btn-vn-label-group">
+                  <span class="btn-vn-main">SETTINGS</span>
+                  <span class="btn-vn-sub">ตั้งค่าเสียง & ข้อความ</span>
+                </span>
+              </button>
+
+              <!-- CREDITS -->
+              <button id="btn-title-credits" class="btn-vn-menu" tabIndex="0">
+                <span class="btn-vn-rail"></span>
+                <span class="btn-vn-marker">📜</span>
+                <span class="btn-vn-label-group">
+                  <span class="btn-vn-main">CREDITS</span>
+                  <span class="btn-vn-sub">เครดิตทีมผู้สร้าง</span>
+                </span>
+              </button>
+            </nav>
+          </div>
+        </div>
+
+        <!-- 4. Cinematic Footer: Version & System -->
+        <footer class="title-cinematic-footer">
+          <div class="footer-version-tag">
+            <span class="ver-brand">MAGIC TOWER</span>
+            <span class="ver-sep">·</span>
+            <span class="ver-num">Version 1.0</span>
+            <span class="ver-sep">·</span>
+            <span class="ver-edition">Tokyo 1999 Edition</span>
+          </div>
+          <div class="footer-controls-hint">
+            <span>[TAB] Navigate</span>
+            <span>·</span>
+            <span>[ENTER] Select</span>
+            <span>·</span>
+            <span>[ESC] Close</span>
+          </div>
+        </footer>
+      </section>
+
+      <!-- ========================================================
+           SCREEN 2: VISUAL NOVEL (VN) SCREEN
+           ======================================================== -->
+      <section id="screen-vn" class="game-screen hidden">
+        <!-- Dynamic scene background container -->
+        <div id="vn-background" class="vn-bg vn-bg-classroom"></div>
+
+        <!-- Top Navigation Bar -->
+        <header class="vn-top-bar">
+          <div id="vn-chapter-banner" class="chapter-banner">
+            <span class="chapter-tag">Chapter 1</span>
+            <span class="scene-title">ห้องเรียนเวทมนตร์</span>
+          </div>
+
+          <div class="vn-nav-controls">
+            <button id="btn-vn-deck" class="btn-vn-ctrl" title="จัดการสำรับการ์ด">🎴 DECK</button>
+            <button id="btn-vn-collection" class="btn-vn-ctrl" title="คลังการ์ดเวทมนตร์">📖 CARDS</button>
+            <button id="btn-vn-relationships" class="btn-vn-ctrl" title="ตัวละคร & สายสัมพันธ์">👥 BONDS</button>
+            <button id="btn-vn-save" class="btn-vn-ctrl" title="บันทึกเกม">💾 SAVE</button>
+            <button id="btn-vn-load" class="btn-vn-ctrl" title="โหลดเกม">📂 LOAD</button>
+            <button id="btn-vn-log" class="btn-vn-ctrl" title="ประวัติบทสนทนา">📜 LOG</button>
+            <button id="btn-vn-auto" class="btn-vn-ctrl" title="เล่นอัตโนมัติ">▶ AUTO</button>
+            <button id="btn-vn-skip" class="btn-vn-ctrl" title="ข้ามบทสนทนา">⏩ SKIP</button>
+            <button id="btn-vn-settings" class="btn-vn-ctrl" title="ตั้งค่า">⚙️</button>
+            <button id="btn-vn-title" class="btn-vn-ctrl" title="กลับหน้าแรก">🏠</button>
+          </div>
+        </header>
+
+        <!-- Chapter Title Card Overlay -->
+        <div id="vn-chapter-card" class="chapter-card-overlay hidden">
+          <div class="chapter-card-inner">
+            <div id="chapter-card-num" class="chapter-card-num">CHAPTER 1</div>
+            <div class="chapter-card-separator"></div>
+            <h2 id="chapter-card-title" class="chapter-card-title">วันธรรมดาที่ไม่ธรรมดา</h2>
+            <div class="chapter-card-sub">MAGIC TOWER • THE TOWER IN THE CITY</div>
+          </div>
+        </div>
+
+        <!-- Character Portrait Stage -->
+        <main class="vn-stage">
+          <div id="vn-portraits"></div>
+        </main>
+
+        <!-- Branching Choices Overlay (Displayed dynamically when scene branch triggers) -->
+        <div id="vn-choice-container" class="vn-choice-container hidden"></div>
+
+        <!-- Bottom Dialogue Box -->
+        <footer class="vn-dialogue-box-container">
+          <div id="vn-advance-trigger" class="vn-dialogue-box">
+            <div class="speaker-header">
+              <span id="vn-speaker-name" class="speaker-name">เร็น</span>
+              <span id="vn-speaker-category" class="speaker-category">Dual Potential</span>
+            </div>
+            <div id="vn-dialogue-text" class="dialogue-text"></div>
+            <div class="vn-advance-indicator">
+              <span>คลิกเพื่ออ่านต่อ / SPACE</span> ▼
+            </div>
+          </div>
+        </footer>
+      </section>
+
+      <!-- ========================================================
+           SCREEN 3: TURN-BASED CARD BATTLE SCREEN
+           ======================================================== -->
+      <section id="screen-battle" class="game-screen hidden">
+        <!-- Battle Top Header: Turn State & Tutorial Help -->
+        <div class="battle-top-bar">
+          <div id="battle-turn-banner" class="turn-banner player-turn">PLAYER TURN</div>
+          <button id="btn-battle-help" class="btn-battle-help" title="คู่มือวิธีเล่น">❓ TUTORIAL</button>
+        </div>
+
+        <!-- 1. Top: Enemy Section -->
+        <div id="battle-enemy-section" class="battle-entity-area enemy-area">
+          <div id="battle-enemy-box" class="battle-entity-card enemy-card">
+            <div id="battle-enemy-avatar-box" class="entity-avatar-box">
+              <!-- SVG Avatar dynamically injected -->
+            </div>
+            <div class="entity-info-col">
+              <div class="entity-header-row">
+                <span id="battle-enemy-name" class="entity-name">หุ่นฝึกซ้อมเวทมนตร์</span>
+                <span id="battle-enemy-shield" class="shield-badge hidden">🛡️ 0</span>
+              </div>
+
+              <!-- Enemy HP Bar -->
+              <div class="stat-bar-group">
+                <div class="stat-label-row">
+                  <span class="stat-title">HP</span>
+                  <span id="battle-enemy-hp" class="stat-num">45/45</span>
+                </div>
+                <div class="stat-bar-outer">
+                  <div id="battle-enemy-hp-ghost" class="stat-bar-ghost" style="width: 100%;"></div>
+                  <div id="battle-enemy-hp-bar" class="stat-bar-inner hp-bar" style="width: 100%;"></div>
+                </div>
+              </div>
+
+              <!-- Enemy Statuses & Intent Row -->
+              <div class="entity-sub-row">
+                <div id="battle-enemy-statuses" class="status-badges-container"></div>
+                <div id="battle-enemy-intent" class="enemy-intent-bubble">
+                  <span class="intent-icon">⚔️</span>
+                  <span class="intent-desc">เตรียมโจมตี 6 หน่วย</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Center: Battle Clash Stage, Combat Log, and Magic VFX Layer -->
+        <div id="battle-center-section" class="battle-center-section">
+          <!-- Magic Effect Overlay Canvas / Layer -->
+          <div id="battle-fx-layer" class="battle-fx-layer"></div>
+
+          <div class="battle-log-card">
+            <div class="battle-log-header">📜 COMBAT LOG (บันทึกการต่อสู้)</div>
+            <div id="battle-log-list" class="battle-log-entries"></div>
+          </div>
+        </div>
+
+        <!-- 3. Bottom: Player Section -->
+        <div id="battle-player-section" class="battle-entity-area player-area">
+          <div id="battle-player-box" class="battle-entity-card player-card">
+            <div id="battle-player-avatar-box" class="entity-avatar-box">
+              <svg viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="54" fill="#1e1b4b" stroke="#38bdf8" stroke-width="3"/>
+                <ellipse cx="60" cy="65" rx="28" ry="30" fill="#fed7aa"/>
+                <path d="M30 45 Q50 30 60 48 Q70 28 90 46 Q75 62 60 52 Q45 64 30 45 Z" fill="#0f172a"/>
+                <ellipse cx="48" cy="62" rx="4" ry="5" fill="#1e1b4b"/>
+                <ellipse cx="72" cy="62" rx="4" ry="5" fill="#1e1b4b"/>
+                <path d="M38 96 L60 88 L82 96 L76 116 L44 116 Z" fill="#0f172a"/>
+              </svg>
+            </div>
+
+            <div class="entity-info-col">
+              <div class="entity-header-row">
+                <span id="battle-player-name" class="entity-name">เร็น (คุณ)</span>
+                <span id="battle-player-shield" class="shield-badge hidden">🛡️ 0</span>
+                <span id="battle-player-stability-badge" class="stability-badge-warning hidden">⚠️ Unstable</span>
+              </div>
+
+              <div class="player-bars-grid">
+                <!-- HP Bar -->
+                <div class="stat-bar-group">
+                  <div class="stat-label-row">
+                    <span class="stat-title">HP</span>
+                    <span id="battle-player-hp" class="stat-num">100/100</span>
+                  </div>
+                  <div class="stat-bar-outer">
+                    <div id="battle-player-hp-ghost" class="stat-bar-ghost" style="width: 100%;"></div>
+                    <div id="battle-player-hp-bar" class="stat-bar-inner hp-bar" style="width: 100%;"></div>
+                  </div>
+                </div>
+
+                <!-- Mana Stability Bar -->
+                <div class="stat-bar-group">
+                  <div class="stat-label-row">
+                    <span class="stat-title">Mana Stability</span>
+                    <span id="battle-player-stability-val">100/100</span>
+                  </div>
+                  <div class="stat-bar-outer">
+                    <div id="battle-player-stability-bar" class="stat-bar-inner stability-bar" style="width: 100%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Mana & Status Row -->
+              <div class="entity-sub-row">
+                <div class="mana-display-inline">
+                  <span class="mana-text-label">Mana:</span>
+                  <span id="battle-player-mana" class="mana-num">3/3</span>
+                  <div id="battle-player-mana-orbs" class="mana-orbs-container"></div>
+                </div>
+
+                <div id="battle-player-statuses" class="status-badges-container"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Bottom-most: Card Hand & Side End Turn -->
+        <div class="battle-bottom-tray">
+          <div class="pile-counter" title="สำรับการ์ดที่เหลือ (จั่ว 1 ใบทุกเทิร์น)">
+            <span>สำรับ</span>
+            <span id="battle-deck-count" class="pile-num">10</span>
+          </div>
+
+          <div id="battle-hand-container" class="battle-hand-container">
+            <!-- Dynamic Hand Cards -->
+          </div>
+
+          <div class="pile-counter" title="การ์ดที่ใช้แล้ว">
+            <span>สุสาน</span>
+            <span id="battle-discard-count" class="pile-num">0</span>
+          </div>
+
+          <!-- Side: End Turn Button -->
+          <button id="btn-end-turn" class="btn-end-turn" title="สิ้นสุดเทิร์นผู้เล่น และเริ่มเทิร์นของศัตรู">
+            <span class="btn-vn-rail"></span>
+            <span class="btn-end-turn-marker">⏩</span>
+            <span class="btn-end-turn-labels">
+              <span class="btn-end-turn-main">END TURN</span>
+              <span class="btn-end-turn-sub">จบเทิร์น</span>
+            </span>
+          </button>
+        </div>
+
+        <!-- Dramatic Battle Start Clash Overlay -->
+        <div id="battle-start-overlay" class="battle-start-overlay hidden">
+          <div class="battle-start-content">
+            <div class="battle-start-rune">⚡ ⚔️ ⚡</div>
+            <div class="battle-start-text">BATTLE START</div>
+            <div id="battle-start-enemy-name" class="battle-start-sub">VS หุ่นฝึกซ้อมเวทมนตร์</div>
+          </div>
+        </div>
+
+        <!-- Victory / Defeat Overlay -->
+        <div id="battle-result-overlay" class="battle-overlay hidden"></div>
+
+        <!-- Card Detail Focus Modal Overlay (Part 6-12) -->
+        <div id="battle-card-detail-overlay" class="battle-card-detail-overlay hidden" aria-modal="true" role="dialog" aria-label="Card Details">
+          <div id="card-detail-backdrop" class="card-detail-backdrop"></div>
+          <div id="battle-card-detail-dialog" class="card-detail-dialog">
+            <!-- Dynamically populated by BattleEngine -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           MODALS (SAVE/LOAD, SETTINGS, LOG, TUTORIAL)
+           ======================================================== -->
+
+      <!-- Battle Tutorial Modal -->
+      <div id="modal-battle-tutorial" class="modal hidden">
+        <div class="modal-dialog tutorial-dialog">
+          <div class="modal-header">
+            <h3 class="modal-title">📖 วิธีเล่นระบบ Card Battle (TUTORIAL)</h3>
+            <button id="btn-close-tutorial" class="btn-modal-close">✕</button>
+          </div>
+          <div class="modal-body tutorial-body">
+            <div class="tutorial-grid">
+              <div class="tutorial-card">
+                <div class="tut-num">1</div>
+                <div class="tut-icon">❤️</div>
+                <h4>HP (พลังชีวิต)</h4>
+                <p>เป้าหมายคือลด HP ศัตรูให้เหลือ 0 หาก HP ของผู้เล่นเหลือ 0 จะพ่ายแพ้ทันที</p>
+              </div>
+
+              <div class="tutorial-card">
+                <div class="tut-num">2</div>
+                <div class="tut-icon">💧</div>
+                <h4>Mana (มานา)</h4>
+                <p>เริ่มต้นที่ 3/3 ในแต่ละเทิร์นผู้เล่นจะได้รับ Mana +1 จนถึง Max Mana เพื่อใช้เล่นการ์ด</p>
+              </div>
+
+              <div class="tutorial-card">
+                <div class="tut-num">3</div>
+                <div class="tut-icon">⚖️</div>
+                <h4>Mana Stability</h4>
+                <p>การใช้เวท Spell จะลดความเสถียร หากลดต่ำมาก (&le;40%) จะเข้าสู่สภาวะ Unstable ใช้ Focus เพื่อฟื้นฟู</p>
+              </div>
+
+              <div class="tutorial-card">
+                <div class="tut-num">4</div>
+                <div class="tut-icon">⚔️</div>
+                <h4>Attack & Spell</h4>
+                <p>การ์ดโจมตีสร้างความเสียหายต่อเป้าหมาย Spell มักแรงกว่าแต่ลดความเสถียรมานา</p>
+              </div>
+
+              <div class="tutorial-card">
+                <div class="tut-num">5</div>
+                <div class="tut-icon">🛡️</div>
+                <h4>Defense & Shield</h4>
+                <p>เกราะจะดูดซับความเสียหายก่อนที่จะกระทบกับ HP ช่วยให้รอดพ้นการโจมตีรุนแรง</p>
+              </div>
+
+              <div class="tutorial-card">
+                <div class="tut-num">6</div>
+                <div class="tut-icon">🔥</div>
+                <h4>Status Effects</h4>
+                <p><b>Burn:</b> รับดาเมจตอนจบเทิร์น<br/><b>Guard:</b> ลดดาเมจลง 30%<br/><b>Focus:</b> เพิ่มดาเมจถัดไป +50%</p>
+              </div>
+
+              <div class="tutorial-card">
+                <div class="tut-num">7</div>
+                <div class="tut-icon">⌛</div>
+                <h4>End Turn</h4>
+                <p>เมื่อเล่นการ์ดเสร็จ กด End Turn เพื่อส่งให้ศัตรูกระทำ จากนั้นจะเริ่มเทิร์นใหม่และจั่วการ์ด 1 ใบ</p>
+              </div>
+
+              <div class="tutorial-card">
+                <div class="tut-num">8</div>
+                <div class="tut-icon">🌟</div>
+                <h4>Limit Break (Ultimate)</h4>
+                <p>ท่าไม้ตายทรงพลัง ใช้ได้เมื่อเข้าสู่เทิร์นที่ 3 ขึ้นไป หรือความเสถียรมานา &le; 70%</p>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button id="btn-skip-tutorial" class="btn-secondary">ข้ามคำแนะนำ (Skip Tutorial)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Save / Load Modal -->
+      <div id="modal-save-load" class="modal hidden">
+        <div class="modal-dialog">
+          <div class="modal-header">
+            <h3 id="modal-save-title" class="modal-title">บันทึกข้อมูลเกม (SAVE GAME)</h3>
+            <button id="btn-close-save-modal" class="btn-modal-close">✕</button>
+          </div>
+          <div class="modal-body">
+            <div id="save-slots-container" class="save-slots-list">
+              <!-- Rendered dynamically: Auto Save + Slot 1, 2, 3 -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Settings Modal -->
+      <div id="modal-settings" class="modal hidden">
+        <div class="modal-dialog">
+          <div class="modal-header">
+            <h3 class="modal-title">⚙️ ตั้งค่าระบบ (SETTINGS)</h3>
+            <button id="btn-close-settings-modal" class="btn-modal-close">✕</button>
+          </div>
+          <div class="modal-body">
+            <div class="settings-form">
+              <div class="form-group">
+                <label for="setting-text-speed">ความเร็วการแสดงข้อความ (Text Speed):</label>
+                <select id="setting-text-speed" class="form-control">
+                  <option value="fast">เร็วมาก (Fast)</option>
+                  <option value="normal" selected>ปกติ (Normal)</option>
+                  <option value="slow">ช้า (Slow)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="setting-auto-speed">ความเร็ว Auto Mode (หน่วงเวลาข้อความถัดไป):</label>
+                <select id="setting-auto-speed" class="form-control">
+                  <option value="1500">เร็ว (1.5 วินาที)</option>
+                  <option value="2500" selected>ปกติ (2.5 วินาที)</option>
+                  <option value="4000">ช้า (4.0 วินาที)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label style="display: flex; align-items: center; gap: 0.65rem; cursor: pointer; color: #e2e8f0; font-weight: 500;">
+                  <input type="checkbox" id="setting-skip-read-toggle" checked style="width: 18px; height: 18px; accent-color: #38bdf8;" />
+                  <span>⏩ ข้ามเฉพาะข้อความที่อ่านแล้ว (Skip Read Text Only)</span>
+                </label>
+              </div>
+
+              <!-- Audio Settings -->
+              <div class="form-group">
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; color: #fecdd3; font-weight: 600;">
+                  <input type="checkbox" id="setting-mute-toggle" style="width: 18px; height: 18px; accent-color: #f43f5e;" />
+                  <span>🔇 ปิดเสียงทั้งหมด (Mute All)</span>
+                </label>
+              </div>
+
+              <div class="form-group">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                  <label for="setting-volume-master">🔊 ระดับเสียงหลัก (Master Volume):</label>
+                  <span id="val-volume-master" style="font-family: monospace; font-weight: bold; color: #38bdf8;">80%</span>
+                </div>
+                <input type="range" id="setting-volume-master" min="0" max="100" value="80" class="form-control" />
+              </div>
+
+              <div class="form-group">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                  <label for="setting-volume-music">🎵 ระดับเสียงดนตรีบรรยากาศ (Music Volume):</label>
+                  <span id="val-volume-music" style="font-family: monospace; font-weight: bold; color: #a855f7;">70%</span>
+                </div>
+                <input type="range" id="setting-volume-music" min="0" max="100" value="70" class="form-control" />
+              </div>
+
+              <div class="form-group">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                  <label for="setting-volume-sfx">✨ ระดับเสียงเอฟเฟกต์ (SFX Volume):</label>
+                  <span id="val-volume-sfx" style="font-family: monospace; font-weight: bold; color: #34d399;">80%</span>
+                </div>
+                <input type="range" id="setting-volume-sfx" min="0" max="100" value="80" class="form-control" />
+              </div>
+
+              <!-- Backward compatibility aliases -->
+              <input type="checkbox" id="setting-sound-toggle" checked style="display: none;" />
+              <input type="range" id="setting-volume" min="0" max="100" value="80" style="display: none;" />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button id="btn-save-settings" class="btn-primary">บันทึกการตั้งค่า</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dialogue Log Modal -->
+      <div id="modal-log" class="modal hidden">
+        <div class="modal-dialog">
+          <div class="modal-header">
+            <h3 class="modal-title">📜 ประวัติบทสนทนา (DIALOGUE LOG)</h3>
+            <button id="btn-close-log-modal" class="btn-modal-close">✕</button>
+          </div>
+          <div class="modal-body">
+            <div id="log-history-content" class="log-history-container">
+              <!-- Dialogue history rows -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DECK MANAGEMENT MODAL (ROUND 4) -->
+      <div id="modal-deck" class="modal hidden">
+        <div class="modal-dialog deck-modal-dialog">
+          <div class="modal-header">
+            <h3 class="modal-title">🎴 จัดการสำรับการ์ด (DECK MANAGEMENT)</h3>
+            <button id="btn-close-deck-modal" class="btn-modal-close">✕</button>
+          </div>
+          <div class="modal-body">
+            <!-- Deck constraints status bar -->
+            <div class="deck-rules-bar">
+              <div class="deck-rule-item">
+                <span>ขนาดสำรับ:</span>
+                <strong id="deck-size-counter">10 / 20</strong>
+                <span class="rule-hint">(ขั้นต่ำ 10 ใบ, สูงสุด 20 ใบ)</span>
+              </div>
+              <div class="deck-rule-item">
+                <span>ขีดจำกัดการ์ดซ้ำ:</span>
+                <strong>สูงสุด 3 ใบ / ชนิด</strong>
+              </div>
+            </div>
+
+            <!-- Two-column deck builder -->
+            <div class="deck-builder-grid">
+              <!-- Left: Current Active Deck -->
+              <div class="deck-col active-deck-col">
+                <div class="deck-col-header">
+                  <h4>⚡ สำรับปัจจุบัน (Current Deck)</h4>
+                  <span id="active-deck-badge" class="deck-badge">10 ใบ</span>
+                </div>
+                <div id="active-deck-cards-list" class="deck-cards-scroll">
+                  <!-- Rendered dynamically -->
+                </div>
+              </div>
+
+              <!-- Right: Unlocked Cards Pool -->
+              <div class="deck-col unlocked-cards-col">
+                <div class="deck-col-header">
+                  <h4>📦 คลังการ์ดที่ปลดล็อก (Unlocked Cards)</h4>
+                  <span class="deck-badge">คลิก [+] เพื่อเพิ่ม</span>
+                </div>
+                <div id="unlocked-cards-pool-list" class="deck-cards-scroll">
+                  <!-- Rendered dynamically -->
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button id="btn-deck-confirm" class="btn-primary">ยืนยันสำรับ (CLOSE & SAVE)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RELATIONSHIPS / BONDS MODAL (ROUND 4) -->
+      <div id="modal-relationships" class="modal hidden">
+        <div class="modal-dialog relationships-modal-dialog">
+          <div class="modal-header">
+            <h3 class="modal-title">👥 สายสัมพันธ์ตัวละคร (CHARACTER BONDS)</h3>
+            <button id="btn-close-relationships-modal" class="btn-modal-close">✕</button>
+          </div>
+          <div class="modal-body">
+            <p class="bonds-subtitle">
+              การตัดสินใจและการกระทำของคุณส่งผลต่อระดับความสัมพันธ์และปลดล็อกการ์ดพิเศษประจำตัวเมื่อถึงระดับ 50+
+            </p>
+            <div id="relationships-cards-container" class="relationships-grid">
+              <!-- Rendered dynamically for Rina, Kai, Mika, Professor Hayase -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- NAME INPUT MODAL (AT START GAME) -->
+      <div id="modal-name-input" class="modal hidden">
+        <div class="modal-dialog name-input-dialog">
+          <div class="modal-header">
+            <h3 class="modal-title">✨ เริ่มต้นการเดินทาง (NEW GAME)</h3>
+            <button id="btn-close-name-modal" class="btn-modal-close">✕</button>
+          </div>
+          <div class="modal-body">
+            <div class="name-input-box">
+              <label for="input-protagonist-name" class="name-label">
+                กรุณาระบุชื่อของคุณ (Protagonist Name):
+              </label>
+              <input
+                type="text"
+                id="input-protagonist-name"
+                class="form-control protagonist-name-field"
+                value="นักเรียนใหม่"
+                maxlength="16"
+                placeholder="นักเรียนใหม่"
+              />
+              <p class="name-hint">
+                ชื่อเริ่มต้นคือ "นักเรียนใหม่" (คุณเป็นนักเรียนปี 1 ผู้มีศักยภาพคู่ที่ก้าวเข้าสู่สถาบันเวทมนตร์แห่งชาติ)
+              </p>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button id="btn-confirm-start-game" class="btn-primary">ก้าวเข้าสู่สถาบัน (START)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- START GAME CONFIRMATION MODAL -->
+      <div id="modal-start-confirm" class="modal hidden">
+        <div class="modal-dialog start-confirm-dialog">
+          <div class="modal-header">
+            <h3 class="modal-title">เริ่มเกมใหม่หรือไม่?</h3>
+            <button id="btn-close-start-confirm" class="btn-modal-close" title="ปิด">✕</button>
+          </div>
+          <div class="modal-body">
+            <p class="confirm-modal-text" style="font-size: 1.15rem; line-height: 1.6; margin-bottom: 0.75rem; color: #f8fafc; font-weight: 600;">
+              เริ่มเกมใหม่หรือไม่?
+            </p>
+            <p class="confirm-modal-subtext" style="font-size: 0.9rem; color: #94a3b8; line-height: 1.6;">
+              ระบบตรวจพบข้อมูลบันทึกที่มีอยู่เดิม การเริ่มเกมใหม่จะไม่ลบข้อมูลบันทึกในช่องบันทึก (Save Slots) ของคุณ คุณสามารถโหลดบันทึกเดิมกลับมาเล่นต่อได้จากเมนู LOAD GAME
+            </p>
+          </div>
+          <div class="modal-footer" style="gap: 0.75rem; justify-content: flex-end;">
+            <button id="btn-start-confirm-proceed" class="btn-primary" style="background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%); border-color: #60a5fa;">
+              เริ่มเกม
+            </button>
+            <button id="btn-start-confirm-cancel" class="btn-secondary">
+              ยกเลิก
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD COLLECTION MODAL -->
+      <div id="modal-card-collection" class="modal hidden">
+        <div class="modal-dialog collection-modal-dialog">
+          <div class="modal-header">
+            <h3 class="modal-title">📖 คลังการ์ดเวทมนตร์ (CARD COLLECTION)</h3>
+            <button id="btn-close-collection-modal" class="btn-modal-close">✕</button>
+          </div>
+          <div class="modal-body">
+            <div class="collection-header-row">
+              <div class="collection-filter-tags">
+                <button class="col-filter-btn active" data-filter="ALL">ALL (ทั้งหมด)</button>
+                <button class="col-filter-btn" data-filter="Attack">ATTACK</button>
+                <button class="col-filter-btn" data-filter="Spell">SPELL</button>
+                <button class="col-filter-btn" data-filter="Defense">DEFENSE</button>
+                <button class="col-filter-btn" data-filter="Technique">TECHNIQUE</button>
+                <button class="col-filter-btn" data-filter="Special">SPECIAL</button>
+              </div>
+              <div class="collection-count-badge">
+                การ์ดที่ปลดล็อก: <strong id="collection-unlocked-count">10</strong> / <span id="collection-total-count">16</span> ใบ
+              </div>
+            </div>
+
+            <!-- Cards Grid -->
+            <div id="collection-cards-grid" class="collection-cards-grid">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button id="btn-collection-close" class="btn-primary">ปิดหน้าต่าง (CLOSE)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CREDITS SCREEN MODAL -->
+      <div id="modal-credits" class="modal hidden">
+        <div class="modal-dialog credits-modal-dialog">
+          <div class="modal-body credits-body">
+            <div class="credits-logo-box">
+              <h2 class="credits-main-title">MAGIC TOWER</h2>
+              <div class="credits-subtitle">THE TOWER IN THE CITY</div>
+              <p class="credits-genre">2D Visual Novel & Turn-Based Card Battle</p>
+            </div>
+
+            <div class="credits-content-scroll">
+              <div class="credits-section">
+                <h4>SCENARIO & WORLD BUILDING</h4>
+                <p>National Magic Academy Chronicle Project</p>
+                <p>Tokyo 1999 Arcane Incident Archives</p>
+              </div>
+
+              <div class="credits-section">
+                <h4>GAME DESIGN & COMBAT SYSTEMS</h4>
+                <p>Turn-Based Mana Stability & Dual-Potential Deck Architecture</p>
+                <p>Tactical Magic Synthesis & Dynamic Status Reactions</p>
+              </div>
+
+              <div class="credits-section">
+                <h4>VISUAL ART & DIRECTION</h4>
+                <p>Modern Fantasy 1990s Tokyo Visual Novel Aesthetic</p>
+                <p>Procedural Vector Runes & Monolith Skyline Presentation</p>
+              </div>
+
+              <div class="credits-section">
+                <h4>AUDIO & ATMOSPHERE</h4>
+                <p>Procedural Arcane Synthesizer & Spatial Sound Engine</p>
+                <p>Harmonic Ambient Resonance</p>
+              </div>
+
+              <div class="credits-section">
+                <h4>SPECIAL THANKS</h4>
+                <p>Created with Google AI Studio</p>
+                <p>All Students & Researchers of the National Magic Academy</p>
+              </div>
+
+              <div class="credits-completed-note">
+                ★ 6 CHAPTERS COMPLETE • THE INCIDENT HAS REACHED ITS DAWN ★
+              </div>
+            </div>
+
+            <div class="credits-footer">
+              <button id="btn-credits-return-title" class="btn-primary" style="padding: 0.85rem 2.5rem; font-size: 1.05rem;">
+                RETURN TO TITLE (กลับสู่หน้าจอหลัก)
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Floating Toast Notifications -->
+      <div id="game-toast" class="game-toast hidden"></div>
+    </div>
+
+    <!-- Main Game Script (Vanilla JS ES Module) -->
+    <script type="module" src="/game.js"></script>
+  </body>
+</html>

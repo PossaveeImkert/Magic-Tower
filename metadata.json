@@ -1,0 +1,8 @@
+{
+  "name": "Arcana: The Tower",
+  "description": "A web-based visual novel and card battle RPG set in a modern fantasy world of magic and mystery.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
